@@ -14,7 +14,8 @@ namespace Proj4
     public Form1()
     {
       InitializeComponent();
-    }
+      this.MouseClick += Form1_MouseClick;
+     }
 
     private void tpCadastro_Click(object sender, EventArgs e)
     {
@@ -35,5 +36,33 @@ namespace Proj4
     {
       arvore.Desenhar(pnlArvore);
     }
-  }
+
+    private void Form1_MouseClick(object sender, MouseEventArgs e)
+    {
+        decimal x = e.X; // Coordenada X relativa ao formulário
+        decimal y = e.Y; // Coordenada Y relativa ao formulário
+
+        // Exibe as coordenadas em uma caixa de mensagem ou em um Label
+        udX.Value = x;
+        udY.Value = y;
+    }
+
+        private void btnIncluirCidade_Click(object sender, EventArgs e)
+        {
+            textNomeCidade_Leave(sender, e);
+        }
+
+    private void textNomeCidade_Leave(object sender, EventArgs e)
+        {
+            if(txtNomeCidade.Text == null)
+            {
+                MessageBox.Show("Não foi digitado nenhum nome de cidade!");
+            }
+            else
+            {
+                MessageBox.Show(udX.Value.ToString());
+                //if(arvore.Existe(txtNomeCidade.Text))
+            }
+        }
+    }
 }

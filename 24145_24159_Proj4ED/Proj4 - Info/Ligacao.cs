@@ -10,7 +10,7 @@ namespace Proj4
   {
     string origem, destino;
     int distancia;
-
+        
     public int CompareTo(Ligacao other)
     {
       return (origem+destino).CompareTo(other.origem+other.destino);
