@@ -326,6 +326,7 @@
             this.btnBuscarCidade.TabIndex = 7;
             this.btnBuscarCidade.Text = "Buscar";
             this.btnBuscarCidade.UseVisualStyleBackColor = true;
+            this.btnBuscarCidade.Click += new System.EventHandler(this.btnBuscarCidade_Click);
             // 
             // udY
             // 

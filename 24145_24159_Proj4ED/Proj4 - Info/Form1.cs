@@ -60,9 +60,20 @@ namespace Proj4
             }
             else
             {
-                MessageBox.Show(udX.Value.ToString());
+                double valX = Decimal.ToDouble(udX.Value); //fazer ou usar uma função buscar cidade,pegando as coordenadas baseado apenas no nome da cidade
+                double valY = Decimal.ToDouble(udY.Value);
+                Cidade novaCidade = new Cidade(txtNomeCidade.Text, valX, valY);
+                if (arvore.Existe(novaCidade))
+                    MessageBox.Show($"A cidade {txtNomeCidade.Text} já existe!");
                 //if(arvore.Existe(txtNomeCidade.Text))
             }
         }
+
+        private void btnBuscarCidade_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
+
+    private 
 }
