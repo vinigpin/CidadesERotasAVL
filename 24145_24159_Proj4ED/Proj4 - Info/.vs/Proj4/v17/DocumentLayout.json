@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{6740BFC1-3F71-402F-87E5-DFF5FD2CEB47}|Proj4.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6740BFC1-3F71-402F-87E5-DFF5FD2CEB47}|Proj4.csproj|C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\cidade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6740BFC1-3F71-402F-87E5-DFF5FD2CEB47}|Proj4.csproj|solutionrelative:cidade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{6740BFC1-3F71-402F-87E5-DFF5FD2CEB47}|Proj4.csproj|c:\\users\\user\\documents\\github\\cidadeserotasavl\\24145_24159_proj4ed\\proj4 - info\\arvore.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6740BFC1-3F71-402F-87E5-DFF5FD2CEB47}|Proj4.csproj|solutionrelative:arvore.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6740BFC1-3F71-402F-87E5-DFF5FD2CEB47}|Proj4.csproj|C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\cidade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6740BFC1-3F71-402F-87E5-DFF5FD2CEB47}|Proj4.csproj|solutionrelative:cidade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6740BFC1-3F71-402F-87E5-DFF5FD2CEB47}|Proj4.csproj|C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
@@ -124,7 +124,7 @@
               "RelativeDocumentMoniker": "Form1.Designer.cs",
               "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\Form1.Designer.cs",
               "RelativeToolTip": "Form1.Designer.cs",
-              "ViewState": "AgIAANwBAAAAAAAAAAAgwBYAAAAEAAAAAAAAAA==",
+              "ViewState": "AgIAAN0BAAAAAAAAAAAgwBYAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-21T19:15:16.128Z",
               "EditorCaption": ""
@@ -169,26 +169,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Arvore.cs",
               "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\Arvore.cs",
               "RelativeDocumentMoniker": "Arvore.cs",
               "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\Arvore.cs",
               "RelativeToolTip": "Arvore.cs",
-              "ViewState": "AgIAAEQAAAAAAAAAAAAAwFkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAJ4AAAAAAAAAAAAswEcAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-19T21:17:35.187Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Cidade.cs",
               "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\Cidade.cs",
               "RelativeDocumentMoniker": "Cidade.cs",
               "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\Cidade.cs",
               "RelativeToolTip": "Cidade.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAQwDgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-19T21:11:50.096Z",
               "EditorCaption": ""
@@ -199,9 +199,9 @@
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\Form1.cs*",
-              "RelativeToolTip": "Form1.cs*",
-              "ViewState": "AgIAACIAAAAAAAAAAAA0wCoAAAAPAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\Form1.cs",
+              "RelativeToolTip": "Form1.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAAA6wEkAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-19T19:55:49.121Z",
               "EditorCaption": ""
@@ -212,8 +212,8 @@
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\Form1.cs [Design]*",
-              "RelativeToolTip": "Form1.cs [Design]*",
+              "ToolTip": "C:\\Users\\USER\\Documents\\GitHub\\CidadesERotasAVL\\24145_24159_Proj4ED\\Proj4 - Info\\Form1.cs [Design]",
+              "RelativeToolTip": "Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-19T19:47:43.018Z",
               "EditorCaption": " [Design]"

@@ -71,9 +71,8 @@ namespace Proj4
 
         private void btnBuscarCidade_Click(object sender, EventArgs e)
         {
-            
+                //
         }
     }
 
-    private 
 }
