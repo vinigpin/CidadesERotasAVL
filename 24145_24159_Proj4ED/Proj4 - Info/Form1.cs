@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Proj4
 {
@@ -17,7 +18,6 @@ namespace Proj4
         public Form1()
         {
             InitializeComponent();
-            pbMapa.MouseClick += oMapa_MouseClick;
 
         }
 
@@ -101,33 +101,50 @@ namespace Proj4
 
         private void textNomeCidade_Leave(object sender, EventArgs e)
         {
-            if(txtNomeCidade.Text == null)
+            if(string.IsNullOrEmpty(txtNomeCidade.Text))
             {
                 MessageBox.Show("Não foi digitado nenhum nome de cidade!");
             }
             else
             {
-                double valX = Decimal.ToDouble(udX.Value); //fazer ou usar uma função buscar cidade,pegando as coordenadas baseado apenas no nome da cidade
+                double valX = Decimal.ToDouble(udX.Value);
                 double valY = Decimal.ToDouble(udY.Value);
-                Cidade novaCidade = new Cidade(txtNomeCidade.Text, valX, valY);
-                if (arvore.Existe(novaCidade))
+                Cidade exCidade = new Cidade(txtNomeCidade.Text, valX, valY);
+                if (arvore.Existe(exCidade))
                     MessageBox.Show($"A cidade {txtNomeCidade.Text} já existe!");
+                else
+                {
+                    MessageBox.Show("Clique no mapa para inserir a posição da cidade");
+                    pbMapa.MouseClick += oMapa_MouseClick;
+                    
+                }
                 //if(arvore.Existe(txtNomeCidade.Text))
             }
         }
 
         private void btnBuscarCidade_Click(object sender, EventArgs e)
         {
-
+            double valX = Decimal.ToDouble(udX.Value);
+            double valY = Decimal.ToDouble(udY.Value);
+            Cidade aCidade = new Cidade(txtNomeCidade.Text, valX, valY);
+            if (arvore.Existe(aCidade))
+                MessageBox.Show($"Cidade {txtNomeCidade.Text} encontrada!Buscando informações...");
+            MessageBox.Show($"x: {arvore.Atual.Info.X} y: {arvore.Atual.Info.Y}");
         }
 
         private void oMapa_MouseClick(object sender, MouseEventArgs e)
         {
-            int x = e.X;
-            int y = e.Y;
+            double x = e.X;
+            double y = e.Y;
 
             udX.Value = Convert.ToDecimal(x);
             udY.Value = Convert.ToDecimal(y);
+
+            Cidade novaCidade = new Cidade(txtNomeCidade.Text,x,y);
+            arvore.IncluirNovoDado(novaCidade);
+
+            pbMapa.MouseClick -= oMapa_MouseClick;
+            MessageBox.Show($"Cidade inserido na posição  X:{x}    Y:{y}");
         }
     }
 }
