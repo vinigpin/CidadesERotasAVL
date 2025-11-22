@@ -96,12 +96,30 @@ namespace Proj4
 
         private void btnIncluirCidade_Click(object sender, EventArgs e)
         {
-            textNomeCidade_Leave(sender, e);
+            if (string.IsNullOrEmpty(txtNomeCidade.Text))
+                MessageBox.Show("Não foi digitado nenhum nome de cidade!");
+            else
+                textNomeCidade_Leave(sender, e);
         }
 
         private void textNomeCidade_Leave(object sender, EventArgs e)
         {
-            if(string.IsNullOrEmpty(txtNomeCidade.Text))
+            double valX = Decimal.ToDouble(udX.Value);
+            double valY = Decimal.ToDouble(udY.Value);
+            Cidade exCidade = new Cidade(txtNomeCidade.Text, valX, valY);
+            if (arvore.Existe(exCidade))
+                MessageBox.Show($"A cidade {txtNomeCidade.Text} já existe!");
+            else
+            {
+                MessageBox.Show("Clique no mapa para inserir a posição da cidade");
+                pbMapa.MouseClick += oMapa_MouseClick;
+
+            }
+        }
+
+        private void btnExcluirCidade_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtNomeCidade.Text))
             {
                 MessageBox.Show("Não foi digitado nenhum nome de cidade!");
             }
@@ -110,15 +128,10 @@ namespace Proj4
                 double valX = Decimal.ToDouble(udX.Value);
                 double valY = Decimal.ToDouble(udY.Value);
                 Cidade exCidade = new Cidade(txtNomeCidade.Text, valX, valY);
-                if (arvore.Existe(exCidade))
-                    MessageBox.Show($"A cidade {txtNomeCidade.Text} já existe!");
+                if (arvore.Excluir(exCidade))
+                    MessageBox.Show("Cidade excluída!");
                 else
-                {
-                    MessageBox.Show("Clique no mapa para inserir a posição da cidade");
-                    pbMapa.MouseClick += oMapa_MouseClick;
-                    
-                }
-                //if(arvore.Existe(txtNomeCidade.Text))
+                    MessageBox.Show("Não foi possível excluir a cidade!");
             }
         }
 
@@ -128,10 +141,16 @@ namespace Proj4
             double valY = Decimal.ToDouble(udY.Value);
             Cidade aCidade = new Cidade(txtNomeCidade.Text, valX, valY);
             if (arvore.Existe(aCidade))
+            {
                 MessageBox.Show($"Cidade {txtNomeCidade.Text} encontrada!Buscando informações...");
-            MessageBox.Show($"x: {arvore.Atual.Info.X} y: {arvore.Atual.Info.Y}");
+                MessageBox.Show($"x: {arvore.Atual.Info.X} y: {arvore.Atual.Info.Y}");
+            }
+            else
+            {
+                MessageBox.Show("Não foi possível encontrar a cidade!");
+            }
         }
-
+        /// ------------------------------------****            OUTROS EVENTOS            ****------------------------------------
         private void oMapa_MouseClick(object sender, MouseEventArgs e)
         {
             double x = e.X;
@@ -142,9 +161,28 @@ namespace Proj4
 
             Cidade novaCidade = new Cidade(txtNomeCidade.Text,x,y);
             arvore.IncluirNovoDado(novaCidade);
+            arvore.GravarArquivoDeRegistros("cidades.dat");
 
             pbMapa.MouseClick -= oMapa_MouseClick;
-            MessageBox.Show($"Cidade inserido na posição  X:{x}    Y:{y}");
+            MessageBox.Show($"A cidade {txtNomeCidade.Text} se localiza na posição  X:{x}    Y:{y}");
+        }
+
+        private void btnAlterarCidade_Click(object sender, EventArgs e)
+        {
+            double valX = Decimal.ToDouble(udX.Value);
+            double valY = Decimal.ToDouble(udY.Value);
+            Cidade aCidade = new Cidade(txtNomeCidade.Text, valX, valY);
+            if (arvore.Existe(aCidade))
+            {
+                MessageBox.Show($"Cidade {txtNomeCidade.Text} encontrada!Buscando informações...");
+                MessageBox.Show($"Clique na tela para alterar as coordenadas da cidade.");
+
+                pbMapa.MouseClick += oMapa_MouseClick;
+            }
+            else
+            {
+                MessageBox.Show("Cidade não encontrada!");
+            }
         }
     }
 }

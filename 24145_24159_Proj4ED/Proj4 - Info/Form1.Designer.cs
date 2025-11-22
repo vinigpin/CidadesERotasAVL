@@ -308,6 +308,7 @@
             this.btnExcluirCidade.TabIndex = 9;
             this.btnExcluirCidade.Text = "Excluir";
             this.btnExcluirCidade.UseVisualStyleBackColor = true;
+            this.btnExcluirCidade.Click += new System.EventHandler(this.btnExcluirCidade_Click);
             // 
             // btnAlterarCidade
             // 
@@ -317,6 +318,7 @@
             this.btnAlterarCidade.TabIndex = 8;
             this.btnAlterarCidade.Text = "Alterar";
             this.btnAlterarCidade.UseVisualStyleBackColor = true;
+            this.btnAlterarCidade.Click += new System.EventHandler(this.btnAlterarCidade_Click);
             // 
             // btnBuscarCidade
             // 
