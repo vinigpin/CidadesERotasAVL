@@ -333,7 +333,7 @@
             this.udY.DecimalPlaces = 4;
             this.udY.Location = new System.Drawing.Point(327, 57);
             this.udY.Maximum = new decimal(new int[] {
-            1000,
+            820,
             0,
             0,
             0});
@@ -355,7 +355,7 @@
             this.udX.DecimalPlaces = 4;
             this.udX.Location = new System.Drawing.Point(123, 57);
             this.udX.Maximum = new decimal(new int[] {
-            1000,
+            1208,
             0,
             0,
             0});
@@ -447,6 +447,7 @@
             this.Name = "Form1";
             this.Text = "Projeto 4 2025 - Cadastro de Cidades e Caminhos - Busca de Caminhos";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.oMapa_MouseClick);
             this.tabControl1.ResumeLayout(false);
             this.tpCadastro.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);

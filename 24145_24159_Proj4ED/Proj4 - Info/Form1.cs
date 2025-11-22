@@ -13,17 +13,19 @@ namespace Proj4
 {
   public partial class Form1 : Form
   {
-        Arvore<Cidade>  arvore = new Arvore<Cidade>();
+        Arvore<Cidade> arvore = new Arvore<Cidade>();
         public Form1()
         {
             InitializeComponent();
-            this.MouseClick += Form1_MouseClick;
+            pbMapa.MouseClick += oMapa_MouseClick;
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             arvore.LerArquivoDeRegistros("../../Dados/cidades.dat");
             LerArquivoDeLigacoes(arvore, "../../Dados/GrafoOnibusSaoPaulo.txt");
+            
         }
 
         private void tpCadastro_Click(object sender, EventArgs e)
@@ -91,21 +93,6 @@ namespace Proj4
 
                 return sb.ToString().Normalize(NormalizationForm.FormC);
         }
-      
-        private void pnlArvore_Paint(object sender, PaintEventArgs e)
-        {
-            arvore.Desenhar(pnlArvore);
-        }
-
-        private void Form1_MouseClick(object sender, MouseEventArgs e)
-        {
-            decimal x = e.X; // Coordenada X relativa ao formulário
-            decimal y = e.Y; // Coordenada Y relativa ao formulário
-
-            // Exibe as coordenadas em uma caixa de mensagem ou em um Label
-            udX.Value = x;
-            udY.Value = y;
-        }
 
         private void btnIncluirCidade_Click(object sender, EventArgs e)
         {
@@ -132,6 +119,15 @@ namespace Proj4
         private void btnBuscarCidade_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void oMapa_MouseClick(object sender, MouseEventArgs e)
+        {
+            int x = e.X;
+            int y = e.Y;
+
+            udX.Value = Convert.ToDecimal(x);
+            udY.Value = Convert.ToDecimal(y);
         }
     }
 }
