@@ -9,7 +9,7 @@ namespace Proj4
   {
     string nome;
     double x, y;
-    ListaSimples<Ligacao> ligacoes = new ListaSimples<Ligacao>();
+    public ListaSimples<Ligacao> ligacoes = new ListaSimples<Ligacao>();
 
     const int tamanhoNome = 25;
     const int tamanhoRegistro = tamanhoNome+ (2 * sizeof(double));
@@ -45,7 +45,7 @@ namespace Proj4
 
     public int CompareTo(Cidade outraCid)
     {
-      return Nome.CompareTo(outraCid.Nome);
+        return Nome.CompareTo(outraCid.Nome);
     }
 
     public int TamanhoRegistro { get => tamanhoRegistro; }
@@ -54,13 +54,36 @@ namespace Proj4
 
     public void LerRegistro(BinaryReader arquivo, long qualRegistro)
     {
+        if (arquivo == null)
+            return;
+        try
+        {
+            long bytes = qualRegistro * tamanhoRegistro;
+            arquivo.BaseStream.Seek(bytes, SeekOrigin.Begin);
 
+            // ler o nome da cidade
+            char[] nomeChar = new char[tamanhoNome];
+            string nomeLido = "";
+            nomeChar = arquivo.ReadChars(tamanhoNome);
+            for (int i = 0; i < tamanhoNome; i++)
+                nomeLido += nomeChar[i];
+            this.nome = nomeLido;
+
+            // ler posicao x, y
+            this.x = arquivo.ReadDouble();
+            this.y = arquivo.ReadDouble();
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show(e.Message);
+        }
+        
     }
 
     public void GravarRegistro(BinaryWriter arquivo)
     {
 
     }
-  }
 
+  }
 }
