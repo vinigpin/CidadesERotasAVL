@@ -9,11 +9,10 @@ namespace Proj4
 {
     class Grafo
     {
-        const int Max_Vertices = 20;    // tamanho físico máximo
+        const int Max_Vertices = 50;    // tamanho físico máximo
         Vertice[] vertices;
         int quantosVertices;
         int[,] matrizDeAjacencias;
-        DataGridView dgv;
 
         /// DIJKSTRA
         DistOriginal[] percurso;
@@ -22,13 +21,12 @@ namespace Proj4
         int doInicioAteAtual; // global usada para ajustar menor caminho com Djikstra
         int nTree;
 
-        public Grafo(DataGridView dgv)
+        public Grafo()
         {
             vertices = new Vertice[Max_Vertices];
             matrizDeAjacencias = new int[Max_Vertices, Max_Vertices];
             quantosVertices = 0;    // tamanho lógico
             nTree = 0;
-            this.dgv = dgv;
             for (int i = 0; i < Max_Vertices; i++)
                 for (int j = 0; j < Max_Vertices; j++)
                     matrizDeAjacencias[i, j] = infinity;
@@ -38,13 +36,6 @@ namespace Proj4
         public void NovoVertice(string nome)
         {
             vertices[quantosVertices++] = new Vertice(nome);
-
-            if (dgv != null) // se foi passado como parâmetro um dataGridView para exibição
-            {                // suas dimensões são ajustadas para a quantidade de vértices
-                dgv.RowCount = quantosVertices + 1;
-                dgv.ColumnCount = quantosVertices + 1;
-                dgv.Columns[quantosVertices].Width = 45;
-            }
         }
 
         public void NovaAresta(int origem, int destino, int custo)
@@ -55,7 +46,7 @@ namespace Proj4
             matrizDeAjacencias[origem, destino] = custo;
         }
 
-        public string Caminho(int inicioDoPercurso, int finalDoPercurso, ListBox lista)
+        public Stack<Tuple<string, int>> Caminho(int inicioDoPercurso, int finalDoPercurso, Stack<Tuple<string, int>> pilha)
         {
             // reiniciar valores
             for (int i = 0; i < quantosVertices; i++)
@@ -76,10 +67,10 @@ namespace Proj4
                 verticeAtual = indiceDoMenor;
                 doInicioAteAtual = percurso[indiceDoMenor].distancia;
                 vertices[verticeAtual].foiVisitado = true;
-                AjustarMenorCaminho(lista);
+                AjustarMenorCaminho();
             }
 
-            return ExibirPercursos(inicioDoPercurso, finalDoPercurso, lista);
+            return RetornarPercurso(inicioDoPercurso, finalDoPercurso, pilha);
         }
 
         public int ObterMenor()
@@ -97,7 +88,7 @@ namespace Proj4
             return indiceDaMinima;
         }
 
-        public void AjustarMenorCaminho(ListBox lista)
+        public void AjustarMenorCaminho()
         {
             for (int col = 0; col < quantosVertices; col++)
             {
@@ -114,73 +105,24 @@ namespace Proj4
                         {
                             percurso[col].verticePai = verticeAtual;
                             percurso[col].distancia = doInicioAteMargem;
-                            ExibirTabela(lista);
                         }
                     }
                 }
             }
-            lista.Items.Add("==================Caminho ajustado==============");
-            lista.Items.Add(" ");
         }
 
-        public void ExibirTabela(ListBox lista)
+        public Stack<Tuple<string, int>> RetornarPercurso(int inicioDoPercurso, int finalDoPercurso, Stack<Tuple<string, int>> pilha)
         {
-            string dist = "";
-            lista.Items.Add("Vértice\tVisitado?\tPeso\tVindo de");
-            for (int i = 0; i < quantosVertices; i++)
-            {
-                if (percurso[i].distancia == infinity)
-                    dist = "inf";
-                else
-                    dist = Convert.ToString(percurso[i].distancia);
-                lista.Items.Add(vertices[i].rotulo + "\t" + vertices[i].foiVisitado +
-                "\t\t" + dist + "\t" + vertices[percurso[i].verticePai].rotulo);
-            }
-            lista.Items.Add("-----------------------------------------------------");
-        }
-
-        public string ExibirPercursos(int inicioDoPercurso, int finalDoPercurso, ListBox lista)
-        {
-            string resultado = "";
-            for (int j = 0; j < quantosVertices; j++)
-            {
-                resultado += vertices[j].rotulo + "=";
-                if (percurso[j].distancia == infinity)
-                    resultado += "inf";
-                else
-                    resultado += percurso[j].distancia + " ";
-                string pai = vertices[percurso[j].verticePai].rotulo;
-                resultado += "(" + pai + ") ";
-            }
-            lista.Items.Add(resultado);
-            lista.Items.Add(" ");
-            lista.Items.Add(" ");
-            lista.Items.Add("Caminho entre " + vertices[inicioDoPercurso].rotulo +
-            " e " + vertices[finalDoPercurso].rotulo);
-            lista.Items.Add(" ");
             int onde = finalDoPercurso;
-            Stack<string> pilha = new Stack<string>();
-            int cont = 0;
+            pilha.Clear();
             while (onde != inicioDoPercurso)
             {
+                pilha.Push(new Tuple<string, int>(vertices[onde].rotulo, percurso[onde].distancia));
                 onde = percurso[onde].verticePai;
-                pilha.Push(vertices[onde].rotulo);
-                cont++;
             }
-            resultado = "";
-            while (pilha.Count != 0)
-            {
-                resultado += pilha.Pop();
-                if (pilha.Count != 0)
-                    resultado += " --> ";
-            }
-            if ((cont == 1) && (percurso[finalDoPercurso].distancia == infinity))
-                resultado = "Não há caminho";
-            else
-                resultado += " --> " + vertices[finalDoPercurso].rotulo;
-            return resultado;
+            pilha.Push(new Tuple<string, int>(vertices[inicioDoPercurso].rotulo, 0));
+            return pilha;
         }
-
 
         public void ExibirVertice(int v)
         {
@@ -212,11 +154,6 @@ namespace Proj4
 
         public void RemoverVertice(int vert)
         {
-            if (dgv != null)
-            {
-                MessageBox.Show($"Matriz de Adjacências antes de remover vértice {vert}");
-                ExibirAdjacencias();
-            }
             if (vert != quantosVertices - 1)
             {
                 for (int j = vert; j < quantosVertices - 1; j++)// remove vértice do vetor
@@ -228,12 +165,6 @@ namespace Proj4
                     MoverColunas(col, quantosVertices - 1);
             }
             quantosVertices--;
-            if (dgv != null)
-            {
-                MessageBox.Show($"Matriz de Adjacências após remover vértice {vert}");
-                ExibirAdjacencias();
-                MessageBox.Show("Retornando à ordenação");
-            }
         }
 
         private void MoverLinhas(int row, int length)
@@ -250,7 +181,7 @@ namespace Proj4
                     matrizDeAjacencias[row, col] = matrizDeAjacencias[row, col + 1]; // desloca para excluir
         }
 
-        public void ExibirAdjacencias()
+        public void ExibirAdjacencias(DataGridView dgv)
         {
             dgv.RowCount = quantosVertices + 1;
             dgv.ColumnCount = quantosVertices + 1;

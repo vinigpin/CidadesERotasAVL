@@ -12,10 +12,10 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Proj4
 {
-  public partial class Form1 : Form
+  public partial class lsbCaminho : Form
   {
         Arvore<Cidade> arvore = new Arvore<Cidade>();
-        public Form1()
+        public lsbCaminho()
         {
             InitializeComponent();
 
@@ -25,23 +25,65 @@ namespace Proj4
         {
             arvore.LerArquivoDeRegistros("../../Dados/cidades.dat");
             LerArquivoDeLigacoes(arvore, "../../Dados/GrafoOnibusSaoPaulo.txt");
-            
+
+            // atualizar periodicamente
+            List<Cidade> cidades = new List<Cidade>();
+            arvore.VisitarEmOrdem(cidades);
+            foreach (var cidade in cidades)
+            {
+                cbxCidadeDestino.Items.Add(cidade.Nome);
+            }
         }
 
-        private void tpCadastro_Click(object sender, EventArgs e)
+        private void btnBuscarCaminho_Click(object sender, EventArgs e)
         {
+            Grafo grafo = new Grafo();
+            List<Cidade> cidades = new List<Cidade>();
+            Dictionary<string, int> nomeIndice = new Dictionary<string, int>();
+            arvore.VisitarEmOrdem(cidades);
+
+            // criar tds os vértices
+            int indice = 0;
+            foreach (var cidade in cidades)
+            {
+                grafo.NovoVertice(cidade.Nome.Trim());
+                nomeIndice.Add(cidade.Nome.Trim(), indice);
+                indice++;
+            }
+
+            // criar tds as arestas
+            foreach (var cidade in cidades)
+                foreach (var ligacao in cidade.ligacoes.Listar())
+                    grafo.NovaAresta(nomeIndice[ligacao.origem], nomeIndice[ligacao.destino], ligacao.distancia);
+
+
+
+            int inicio = nomeIndice[txtNomeCidade.Text.Trim()];
+            int fim = nomeIndice[cbxCidadeDestino.Text.Trim()];
+            Stack<Tuple<string, int>> caminho = new Stack<Tuple<string, int>>();
+            caminho = grafo.Caminho(inicio, fim, caminho);
+
+            dgvRotas.Rows.Clear(); // Limpa resultados anteriores
+            dgvRotas.RowCount = caminho.Count;
+            int row = 0;
+            int distancia = 0;
+
+            while (caminho.Count != 0)
+            {
+                Tuple<string, int> segmento = caminho.Pop();
+
+                dgvRotas.Rows[row].Cells[0].Value = segmento.Item1;
+                dgvRotas.Rows[row].Cells[1].Value = segmento.Item2;
+                distancia = segmento.Item2;
+                row++;
+            };
+            lbDistanciaTotal.Text = "Distância total: " + distancia + "km";
+
 
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pnlArvore_Paint(object sender, PaintEventArgs e)
-        {
-          arvore.Desenhar(pnlArvore);
-        }
+        private void cbxCidadeDestino_SelectedIndexChanged(object sender, EventArgs e)
+        { }
 
         private void LerArquivoDeLigacoes(Arvore<Cidade> arvore, string nomeArquivo)
         {
@@ -183,6 +225,26 @@ namespace Proj4
             {
                 MessageBox.Show("Cidade não encontrada!");
             }
+        }
+
+        private void pnlArvore_Paint(object sender, PaintEventArgs e)
+        {
+            arvore.Desenhar(pnlArvore);
+        }
+
+        private void tpCadastro_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pbMapa_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

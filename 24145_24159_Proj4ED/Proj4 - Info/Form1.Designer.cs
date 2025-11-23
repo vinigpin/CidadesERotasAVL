@@ -1,6 +1,6 @@
 ﻿namespace Proj4
 {
-  partial class Form1
+  partial class lsbCaminho
   {
     /// <summary>
     /// Variável de designer necessária.
@@ -166,6 +166,7 @@
             this.btnBuscarCaminho.TabIndex = 2;
             this.btnBuscarCaminho.Text = "Buscar caminhos";
             this.btnBuscarCaminho.UseVisualStyleBackColor = true;
+            this.btnBuscarCaminho.Click += new System.EventHandler(this.btnBuscarCaminho_Click);
             // 
             // cbxCidadeDestino
             // 
@@ -174,6 +175,7 @@
             this.cbxCidadeDestino.Name = "cbxCidadeDestino";
             this.cbxCidadeDestino.Size = new System.Drawing.Size(243, 26);
             this.cbxCidadeDestino.TabIndex = 1;
+            this.cbxCidadeDestino.SelectedIndexChanged += new System.EventHandler(this.cbxCidadeDestino_SelectedIndexChanged);
             // 
             // label6
             // 
@@ -414,6 +416,7 @@
             this.pbMapa.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbMapa.TabIndex = 0;
             this.pbMapa.TabStop = false;
+            this.pbMapa.Click += new System.EventHandler(this.pbMapa_Click);
             // 
             // tpArvore
             // 
@@ -438,7 +441,7 @@
             this.pnlArvore.TabIndex = 0;
             this.pnlArvore.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlArvore_Paint);
             // 
-            // Form1
+            // lsbCaminho
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -446,7 +449,7 @@
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "Form1";
+            this.Name = "lsbCaminho";
             this.Text = "Projeto 4 2025 - Cadastro de Cidades e Caminhos - Busca de Caminhos";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.oMapa_MouseClick);
@@ -506,6 +509,6 @@
     private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
     private System.Windows.Forms.Panel pnlArvore;
     private System.Windows.Forms.OpenFileDialog dlgAbrir;
-  }
+    }
 }
 
