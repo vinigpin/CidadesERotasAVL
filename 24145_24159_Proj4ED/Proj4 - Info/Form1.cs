@@ -8,22 +8,24 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Proj4
 {
   public partial class Form1 : Form
   {
-        Arvore<Cidade>  arvore = new Arvore<Cidade>();
+        Arvore<Cidade> arvore = new Arvore<Cidade>();
         public Form1()
         {
             InitializeComponent();
-            this.MouseClick += Form1_MouseClick;
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             arvore.LerArquivoDeRegistros("../../Dados/cidades.dat");
             LerArquivoDeLigacoes(arvore, "../../Dados/GrafoOnibusSaoPaulo.txt");
+            
         }
 
         private void tpCadastro_Click(object sender, EventArgs e)
@@ -91,43 +93,96 @@ namespace Proj4
 
                 return sb.ToString().Normalize(NormalizationForm.FormC);
         }
-     
-
-        private void Form1_MouseClick(object sender, MouseEventArgs e)
-        {
-            decimal x = e.X; // Coordenada X relativa ao formulário
-            decimal y = e.Y; // Coordenada Y relativa ao formulário
-
-            // Exibe as coordenadas em uma caixa de mensagem ou em um Label
-            udX.Value = x;
-            udY.Value = y;
-        }
 
         private void btnIncluirCidade_Click(object sender, EventArgs e)
         {
-            textNomeCidade_Leave(sender, e);
+            if (string.IsNullOrEmpty(txtNomeCidade.Text))
+                MessageBox.Show("Não foi digitado nenhum nome de cidade!");
+            else
+                textNomeCidade_Leave(sender, e);
         }
 
         private void textNomeCidade_Leave(object sender, EventArgs e)
         {
-            if(txtNomeCidade.Text == null)
+            double valX = Decimal.ToDouble(udX.Value);
+            double valY = Decimal.ToDouble(udY.Value);
+            Cidade exCidade = new Cidade(txtNomeCidade.Text, valX, valY);
+            if (arvore.Existe(exCidade))
+                MessageBox.Show($"A cidade {txtNomeCidade.Text} já existe!");
+            else
+            {
+                MessageBox.Show("Clique no mapa para inserir a posição da cidade");
+                pbMapa.MouseClick += oMapa_MouseClick;
+
+            }
+        }
+
+        private void btnExcluirCidade_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtNomeCidade.Text))
             {
                 MessageBox.Show("Não foi digitado nenhum nome de cidade!");
             }
             else
             {
-                double valX = Decimal.ToDouble(udX.Value); //fazer ou usar uma função buscar cidade,pegando as coordenadas baseado apenas no nome da cidade
+                double valX = Decimal.ToDouble(udX.Value);
                 double valY = Decimal.ToDouble(udY.Value);
-                Cidade novaCidade = new Cidade(txtNomeCidade.Text, valX, valY);
-                if (arvore.Existe(novaCidade))
-                    MessageBox.Show($"A cidade {txtNomeCidade.Text} já existe!");
-                //if(arvore.Existe(txtNomeCidade.Text))
+                Cidade exCidade = new Cidade(txtNomeCidade.Text, valX, valY);
+                if (arvore.Excluir(exCidade))
+                    MessageBox.Show("Cidade excluída!");
+                else
+                    MessageBox.Show("Não foi possível excluir a cidade!");
             }
         }
 
         private void btnBuscarCidade_Click(object sender, EventArgs e)
         {
+            double valX = Decimal.ToDouble(udX.Value);
+            double valY = Decimal.ToDouble(udY.Value);
+            Cidade aCidade = new Cidade(txtNomeCidade.Text, valX, valY);
+            if (arvore.Existe(aCidade))
+            {
+                MessageBox.Show($"Cidade {txtNomeCidade.Text} encontrada!Buscando informações...");
+                MessageBox.Show($"x: {arvore.Atual.Info.X} y: {arvore.Atual.Info.Y}");
+            }
+            else
+            {
+                MessageBox.Show("Não foi possível encontrar a cidade!");
+            }
+        }
+        /// ------------------------------------****            OUTROS EVENTOS            ****------------------------------------
+        private void oMapa_MouseClick(object sender, MouseEventArgs e)
+        {
+            double x = e.X;
+            double y = e.Y;
 
+            udX.Value = Convert.ToDecimal(x);
+            udY.Value = Convert.ToDecimal(y);
+
+            Cidade novaCidade = new Cidade(txtNomeCidade.Text,x,y);
+            arvore.IncluirNovoDado(novaCidade);
+            arvore.GravarArquivoDeRegistros("cidades.dat");
+
+            pbMapa.MouseClick -= oMapa_MouseClick;
+            MessageBox.Show($"A cidade {txtNomeCidade.Text} se localiza na posição  X:{x}    Y:{y}");
+        }
+
+        private void btnAlterarCidade_Click(object sender, EventArgs e)
+        {
+            double valX = Decimal.ToDouble(udX.Value);
+            double valY = Decimal.ToDouble(udY.Value);
+            Cidade aCidade = new Cidade(txtNomeCidade.Text, valX, valY);
+            if (arvore.Existe(aCidade))
+            {
+                MessageBox.Show($"Cidade {txtNomeCidade.Text} encontrada!Buscando informações...");
+                MessageBox.Show($"Clique na tela para alterar as coordenadas da cidade.");
+
+                pbMapa.MouseClick += oMapa_MouseClick;
+            }
+            else
+            {
+                MessageBox.Show("Cidade não encontrada!");
+            }
         }
     }
 }
