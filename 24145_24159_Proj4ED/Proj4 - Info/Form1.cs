@@ -15,10 +15,10 @@ namespace Proj4
   public partial class lsbCaminho : Form
   {
         Arvore<Cidade> arvore = new Arvore<Cidade>();
+        Stack<string> caminhoEncontrado = new Stack<string>();
         public lsbCaminho()
         {
             InitializeComponent();
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -33,10 +33,85 @@ namespace Proj4
             {
                 cbxCidadeDestino.Items.Add(cidade.Nome);
             }
+
+            // exibir localização
+            pbMapa.Invalidate();
+        }
+
+        private void pbMapa_Paint(object sender, PaintEventArgs e)
+        {
+            float larguraMapa = pbMapa.Width;
+            float alturaMapa = pbMapa.Height;
+            float posX;
+            float posY;
+
+            List<Cidade> cidades = new List<Cidade>();
+            arvore.VisitarEmOrdem(cidades);
+            foreach (var cidade in cidades)
+            {
+                posX = (float)cidade.X;
+                posY = (float)cidade.Y;
+                string nome = cidade.Nome;
+                ListaSimples<Ligacao> ligacoes = cidade.ligacoes;
+
+                float centroX = posX * larguraMapa;
+                float centroY = posY * alturaMapa;
+                int raio = 3;
+                float diametro = raio * 2;
+
+                float x = centroX - raio;
+                float y = centroY - raio;
+                foreach (var liga in ligacoes.Listar())
+                {
+                    using (Pen pen = new Pen(Color.Green, 2)) // Cor verde e espessura 2 pixels
+                    {
+                        // O método DrawLine aceita quatro floats (x1, y1, x2, y2)
+                        // Onde (x1, y1) é o ponto de partida e (x2, y2) é o ponto final.
+                        arvore.Existe(new Cidade(liga.destino));
+                        e.Graphics.DrawLine(
+                            pen,
+                            centroX, // x de partida (centro do ponto)
+                            centroY, // y de partida (centro do ponto)
+                            (float)arvore.Atual.Info.X * larguraMapa, // x de destino (100)
+                            (float)arvore.Atual.Info.Y * alturaMapa  // y de destino (100)
+                        );
+                    }
+                }
+                using (SolidBrush brush = new SolidBrush(Color.Red))
+                {
+                    e.Graphics.FillEllipse(brush, x, y, diametro, diametro);
+                }
+                using (Font font = new Font("Arial", 8, FontStyle.Bold))
+                using (SolidBrush textBrush = new SolidBrush(Color.Black))
+                {
+                    SizeF textSize = e.Graphics.MeasureString(nome, font);
+                    e.Graphics.DrawString(nome, font, textBrush, centroX, centroY);
+                }
+                
+            }
+
+            float antX = -1;
+            float antY = -1;;
+            while (caminhoEncontrado.Count != 0)
+            {
+                using (Pen pen = new Pen(Color.Red, 2)) // Cor verde e espessura 2 pixels
+                {
+                    string cidade = caminhoEncontrado.Pop();
+                    arvore.Existe(new Cidade(cidade));
+
+                    posX = (float)arvore.Atual.Info.X * larguraMapa;
+                    posY = (float)arvore.Atual.Info.Y * alturaMapa;
+                    if (antX > -1 && antY > -1)
+                        e.Graphics.DrawLine(pen, antX, antY, posX, posY);
+                }
+                antX = posX;
+                antY = posY;
+            }
         }
 
         private void btnBuscarCaminho_Click(object sender, EventArgs e)
         {
+            // instânciar elementos 
             Grafo grafo = new Grafo();
             List<Cidade> cidades = new List<Cidade>();
             Dictionary<string, int> nomeIndice = new Dictionary<string, int>();
@@ -56,30 +131,33 @@ namespace Proj4
                 foreach (var ligacao in cidade.ligacoes.Listar())
                     grafo.NovaAresta(nomeIndice[ligacao.origem], nomeIndice[ligacao.destino], ligacao.distancia);
 
-
-
+            // calcular o caminho
             int inicio = nomeIndice[txtNomeCidade.Text.Trim()];
             int fim = nomeIndice[cbxCidadeDestino.Text.Trim()];
             Stack<Tuple<string, int>> caminho = new Stack<Tuple<string, int>>();
             caminho = grafo.Caminho(inicio, fim, caminho);
 
-            dgvRotas.Rows.Clear(); // Limpa resultados anteriores
+            // exibir rotas no dgv
+            dgvRotas.Rows.Clear(); 
             dgvRotas.RowCount = caminho.Count;
             int row = 0;
             int distancia = 0;
+            string nome;
 
             while (caminho.Count != 0)
             {
                 Tuple<string, int> segmento = caminho.Pop();
 
-                dgvRotas.Rows[row].Cells[0].Value = segmento.Item1;
-                dgvRotas.Rows[row].Cells[1].Value = segmento.Item2;
+                nome = segmento.Item1;
                 distancia = segmento.Item2;
+                caminhoEncontrado.Push(nome);
+
+                dgvRotas.Rows[row].Cells[0].Value = nome;
+                dgvRotas.Rows[row].Cells[1].Value = distancia;
                 row++;
             };
             lbDistanciaTotal.Text = "Distância total: " + distancia + "km";
-
-
+            pbMapa.Invalidate();
         }
 
         private void cbxCidadeDestino_SelectedIndexChanged(object sender, EventArgs e)
@@ -246,5 +324,7 @@ namespace Proj4
         {
 
         }
+
+        
     }
 }
