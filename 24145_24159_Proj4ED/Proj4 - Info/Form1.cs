@@ -91,11 +91,7 @@ namespace Proj4
 
                 return sb.ToString().Normalize(NormalizationForm.FormC);
         }
-      
-        private void pnlArvore_Paint(object sender, PaintEventArgs e)
-        {
-            arvore.Desenhar(pnlArvore);
-        }
+     
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
