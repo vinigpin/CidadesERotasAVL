@@ -77,14 +77,23 @@ namespace Proj4
 
         private void btnBuscarCidade_Click(object sender, EventArgs e)
         {
-            double valX = Decimal.ToDouble(udX.Value);
-            double valY = Decimal.ToDouble(udY.Value);
-            Cidade aCidade = new Cidade(txtNomeCidade.Text, valX, valY);
+            Cidade aCidade = new Cidade(txtNomeCidade.Text);
             if (arvore.Existe(aCidade))
             {
                 MessageBox.Show($"Cidade {txtNomeCidade.Text} encontrada!Buscando informações...");
-                MessageBox.Show($"x: {arvore.Atual.Info.X} y: {arvore.Atual.Info.Y}");
-
+                udX.Value = (decimal)arvore.Atual.Info.X;
+                udY.Value = (decimal)arvore.Atual.Info.Y;
+                List<Ligacao> ligacaos = new List<Ligacao>();
+                ligacaos = arvore.Atual.Info.ligacoes.Listar();
+                dgvLigacoes.Rows.Clear();
+                dgvLigacoes.RowCount = ligacaos.Count;
+                int row = 0;
+                for (int i = 0; i < ligacaos.Count; i++)
+                {
+                    //dgvLigacoes.Rows.Add();
+                    //dgvLigacoes.Rows[i].Cells[0].Value = ligacaos[i].destino;
+                    //dgvLigacoes.Rows[i].Cells[1].Value = ligacaos[i].distancia;
+                }
             }
             else
             {
