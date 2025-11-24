@@ -30,3 +30,14 @@ C:\Users\Vinicius\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - 
 C:\Users\Vinicius\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\obj\Debug\Proj4.exe
 C:\Users\Vinicius\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\obj\Debug\Proj4.pdb
 C:\Users\Vinicius\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\obj\Debug\Proj4.lsbCaminho.resources
+C:\Users\u24145\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\bin\Debug\Proj4.exe.config
+C:\Users\u24145\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\bin\Debug\Proj4.exe
+C:\Users\u24145\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\bin\Debug\Proj4.pdb
+C:\Users\u24145\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\obj\Debug\Proj4.csproj.AssemblyReference.cache
+C:\Users\u24145\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\obj\Debug\Proj4.exe.config
+C:\Users\u24145\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\obj\Debug\Proj4.lsbCaminho.resources
+C:\Users\u24145\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\obj\Debug\Proj4.Properties.Resources.resources
+C:\Users\u24145\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\obj\Debug\Proj4.csproj.GenerateResource.cache
+C:\Users\u24145\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\obj\Debug\Proj4.csproj.CoreCompileInputs.cache
+C:\Users\u24145\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\obj\Debug\Proj4.exe
+C:\Users\u24145\Documents\GitHub\CidadesERotasAVL\24145_24159_Proj4ED\Proj4 - Info\obj\Debug\Proj4.pdb

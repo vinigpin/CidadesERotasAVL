@@ -16,7 +16,7 @@ namespace AgendaAlfabetica
         private int quantosNos;
 
         private bool primeiroAcessoDoPercurso;
-
+        
         public ListaSimples()
         {
             primeiro = ultimo = anterior = atual = null;

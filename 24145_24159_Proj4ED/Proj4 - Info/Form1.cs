@@ -17,6 +17,7 @@ namespace Proj4
   {
         Arvore<Cidade> arvore = new Arvore<Cidade>();
         List<string> caminhoEncontrado = new List<string>();
+        String qualBotao = "nenhum";
         public lsbCaminho()
         {
             InitializeComponent();
@@ -41,6 +42,7 @@ namespace Proj4
         }
         private void textNomeCidade_Leave(object sender, EventArgs e)
         {
+            qualBotao = "Incluir";
             double valX = Decimal.ToDouble(udX.Value);
             double valY = Decimal.ToDouble(udY.Value);
             Cidade exCidade = new Cidade(txtNomeCidade.Text, valX, valY);
@@ -50,7 +52,6 @@ namespace Proj4
             {
                 MessageBox.Show("Clique no mapa para inserir a posição da cidade");
                 pbMapa.MouseClick += oMapa_MouseClick;
-
             }
         }
 
@@ -83,6 +84,7 @@ namespace Proj4
             {
                 MessageBox.Show($"Cidade {txtNomeCidade.Text} encontrada!Buscando informações...");
                 MessageBox.Show($"x: {arvore.Atual.Info.X} y: {arvore.Atual.Info.Y}");
+
             }
             else
             {
@@ -100,7 +102,7 @@ namespace Proj4
             {
                 MessageBox.Show($"Cidade {txtNomeCidade.Text} encontrada!Buscando informações...");
                 MessageBox.Show($"Clique na tela para alterar as coordenadas da cidade.");
-
+                arvore.Excluir(aCidade);
                 pbMapa.MouseClick += oMapa_MouseClick;
             }
             else
@@ -109,19 +111,18 @@ namespace Proj4
             }
         }
         private void oMapa_MouseClick(object sender, MouseEventArgs e)
-        {
-            double x = e.X;
-            double y = e.Y;
-
+        { 
+            double x = (double)e.X / pbMapa.Width;
+            double y = (double)e.Y / pbMapa.Height;
             udX.Value = Convert.ToDecimal(x);
             udY.Value = Convert.ToDecimal(y);
-
             Cidade novaCidade = new Cidade(txtNomeCidade.Text, x, y);
-            arvore.IncluirNovoDado(novaCidade);
-            arvore.GravarArquivoDeRegistros("cidades.dat");
+            arvore.IncluirNovoDado(novaCidade);    
 
-            pbMapa.MouseClick -= oMapa_MouseClick;
+
+            pbMapa.Invalidate();
             MessageBox.Show($"A cidade {txtNomeCidade.Text} se localiza na posição  X:{x}    Y:{y}");
+            pbMapa.MouseClick -= oMapa_MouseClick;
         }
 
 
