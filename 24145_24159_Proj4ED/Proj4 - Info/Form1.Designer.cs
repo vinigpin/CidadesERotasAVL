@@ -231,6 +231,7 @@
             this.btnExcluirCaminho.TabIndex = 9;
             this.btnExcluirCaminho.Text = "-";
             this.btnExcluirCaminho.UseVisualStyleBackColor = true;
+            this.btnExcluirCaminho.Click += new System.EventHandler(this.btnExcluirCaminho_Click);
             // 
             // btnIncluirCaminho
             // 
@@ -240,6 +241,7 @@
             this.btnIncluirCaminho.TabIndex = 8;
             this.btnIncluirCaminho.Text = "+";
             this.btnIncluirCaminho.UseVisualStyleBackColor = true;
+            this.btnIncluirCaminho.Click += new System.EventHandler(this.btnIncluirCaminho_Click);
             // 
             // label5
             // 
@@ -452,6 +454,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "lsbCaminho";
             this.Text = "Projeto 4 2025 - Cadastro de Cidades e Caminhos - Busca de Caminhos";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.lsbCaminho_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.oMapa_MouseClick);
             this.tabControl1.ResumeLayout(false);

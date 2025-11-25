@@ -27,9 +27,18 @@ namespace Proj4
         {
             arvore.LerArquivoDeRegistros("../../Dados/cidades.dat");
             LerArquivoDeLigacoes(arvore, "../../Dados/GrafoOnibusSaoPaulo.txt");
-            pbMapa.Invalidate();
             atualizarInfo();
         }
+
+        private void lsbCaminho_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MessageBox.Show("Salvar alterações?", "Confirmar", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                arvore.GravarArquivoDeRegistros("../../Dados/cidades.dat");
+                GravarArquivoDeLigacoes(arvore, "../../Dados/GrafoOnibusSaoPaulo.txt");
+            }
+        }
+
 
         // ---------------------Eventos do forms---------------------
         // --crud--
@@ -67,10 +76,19 @@ namespace Proj4
                 double valX = Decimal.ToDouble(udX.Value);
                 double valY = Decimal.ToDouble(udY.Value);
                 Cidade exCidade = new Cidade(txtNomeCidade.Text, valX, valY);
+                arvore.Existe(exCidade);
+                foreach (var cidade in arvore.Atual.Info.ligacoes.Listar())
+                {
+                    arvore.Existe(new Cidade(cidade.destino));
+                    foreach (var ligacoa in arvore.Atual.Info.ligacoes.Listar())
+                        if (ligacoa.destino.CompareTo(ligacoa.destino) == 0)
+                            arvore.Atual.Info.ligacoes.RemoverDado(ligacoa);
+                }
                 if (arvore.Excluir(exCidade))
                     MessageBox.Show("Cidade excluída!");
                 else
                     MessageBox.Show("Não foi possível excluir a cidade!");
+                atualizarInfo();
             }
         }
 
@@ -86,13 +104,12 @@ namespace Proj4
                 List<Ligacao> ligacaos = new List<Ligacao>();
                 ligacaos = arvore.Atual.Info.ligacoes.Listar();
                 dgvLigacoes.Rows.Clear();
-                dgvLigacoes.RowCount = ligacaos.Count;
+                dgvLigacoes.RowCount = ligacaos.Count == 0 ? 1 : ligacaos.Count;
                 int row = 0;
                 for (int i = 0; i < ligacaos.Count; i++)
                 {
-                    //dgvLigacoes.Rows.Add();
-                    //dgvLigacoes.Rows[i].Cells[0].Value = ligacaos[i].destino;
-                    //dgvLigacoes.Rows[i].Cells[1].Value = ligacaos[i].distancia;
+                    dgvLigacoes.Rows[i].Cells[0].Value = ligacaos[i].destino;
+                    dgvLigacoes.Rows[i].Cells[1].Value = ligacaos[i].distancia;
                 }
             }
             else
@@ -126,12 +143,43 @@ namespace Proj4
             udX.Value = Convert.ToDecimal(x);
             udY.Value = Convert.ToDecimal(y);
             Cidade novaCidade = new Cidade(txtNomeCidade.Text, x, y);
+            if (arvore.Atual != null)
+                foreach(var lig in arvore.Atual.Info.ligacoes.Listar())
+                    novaCidade.ligacoes.InserirEmOrdem(lig);
             arvore.IncluirNovoDado(novaCidade);    
 
 
-            pbMapa.Invalidate();
-            MessageBox.Show($"A cidade {txtNomeCidade.Text} se localiza na posição  X:{x}    Y:{y}");
+            atualizarInfo();
             pbMapa.MouseClick -= oMapa_MouseClick;
+        }
+
+
+        private void btnIncluirCaminho_Click(object sender, EventArgs e)
+        {
+            string cidadeOrigem = txtNomeCidade.Text;
+            string cidadeDestino = txtNovoDestino.Text;
+            decimal distancia = numericUpDown1.Value;
+
+            arvore.Existe(new Cidade(cidadeDestino));
+            arvore.Atual.Info.ligacoes.InserirEmOrdem(new Ligacao(cidadeDestino, cidadeOrigem, (int)distancia));
+            arvore.Existe(new Cidade(cidadeOrigem));
+            arvore.Atual.Info.ligacoes.InserirEmOrdem(new Ligacao(cidadeOrigem, cidadeDestino, (int)distancia));
+
+            atualizarInfo();
+        }
+
+        private void btnExcluirCaminho_Click(object sender, EventArgs e)
+        {
+            string cidadeOrigem = txtNomeCidade.Text;
+            string cidadeDestino = txtNovoDestino.Text;
+            decimal distancia = numericUpDown1.Value;
+
+            arvore.Existe(new Cidade(cidadeDestino));
+            arvore.Atual.Info.ligacoes.RemoverDado(new Ligacao(cidadeDestino, cidadeOrigem, (int)distancia));
+            arvore.Existe(new Cidade(cidadeOrigem));
+            arvore.Atual.Info.ligacoes.RemoverDado(new Ligacao(cidadeOrigem, cidadeDestino, (int)distancia));
+
+            atualizarInfo();
         }
 
 
@@ -262,36 +310,69 @@ namespace Proj4
         {
             try
             {
-                StreamReader leitor = new StreamReader(nomeArquivo);
-                string linha = leitor.ReadLine();
-                while (linha != null)
+                using (StreamReader leitor = new StreamReader(nomeArquivo))
                 {
-                    
-                    string[] dados = linha.Split(';');
-
-                    string stringCidade1 = RemoverAcentos(dados[0]);
-                    Cidade cidade1 = new Cidade(stringCidade1);
-                    bool existeCidade1 = arvore.Existe(cidade1);
-                    NoArvore<Cidade> noCidade1 = arvore.Atual;
-
-                    string stringCidade2 = RemoverAcentos(dados[1]);
-                    Cidade cidade2 = new Cidade(RemoverAcentos(dados[1]));
-                    bool existeCidade2 = arvore.Existe(cidade2);
-                    NoArvore<Cidade> noCidade2 = arvore.Atual;
-
-                    if (existeCidade1 && existeCidade2)
+                    string linha = leitor.ReadLine();
+                    while (linha != null)
                     {
-                        Ligacao ligacao1 = new Ligacao(stringCidade1, stringCidade2, int.Parse(dados[2]));
-                        Ligacao ligacao2 = new Ligacao(stringCidade2, stringCidade1, int.Parse(dados[2]));
-                        noCidade1.Info.ligacoes.InserirAposFim(ligacao1);
-                        noCidade2.Info.ligacoes.InserirAposFim(ligacao2);
-                    }
 
-                    linha = leitor.ReadLine();
+                        string[] dados = linha.Split(';');
+
+                        string stringCidade1 = RemoverAcentos(dados[0]);
+                        Cidade cidade1 = new Cidade(stringCidade1);
+                        bool existeCidade1 = arvore.Existe(cidade1);
+                        NoArvore<Cidade> noCidade1 = arvore.Atual;
+
+                        string stringCidade2 = RemoverAcentos(dados[1]);
+                        Cidade cidade2 = new Cidade(RemoverAcentos(dados[1]));
+                        bool existeCidade2 = arvore.Existe(cidade2);
+                        NoArvore<Cidade> noCidade2 = arvore.Atual;
+
+                        if (existeCidade1 && existeCidade2)
+                        {
+                            Ligacao ligacao1 = new Ligacao(stringCidade1, stringCidade2, int.Parse(dados[2]));
+                            Ligacao ligacao2 = new Ligacao(stringCidade2, stringCidade1, int.Parse(dados[2]));
+                            noCidade1.Info.ligacoes.InserirEmOrdem(ligacao1);
+                            noCidade2.Info.ligacoes.InserirEmOrdem(ligacao2);
+                        }
+
+                        linha = leitor.ReadLine();
+                    }
                 }
-                
             }
             catch (Exception ex)
+            {
+                Console.WriteLine($"Ocorreu um erro: {ex.Message}");
+            }
+        }
+
+
+        private void GravarArquivoDeLigacoes(Arvore<Cidade> arvore, string nomeArquivo)
+        {
+            try
+            {
+                using (StreamWriter arquivo = new StreamWriter(nomeArquivo))
+                {
+                    List<Cidade> cidades = new List<Cidade>();
+                    arvore.VisitarEmOrdem(cidades);
+                    HashSet<string> gravadas = new HashSet<string>();
+
+                    foreach (var cidade in cidades)
+                    {
+                        foreach (var ligacao in cidade.ligacoes.Listar())
+                        {
+                            string chave1 = $"{ligacao.origem}-{ligacao.destino}";
+                            string chave2 = $"{ligacao.destino}-{ligacao.origem}";
+
+                            if (!gravadas.Contains(chave1) && !gravadas.Contains(chave2))
+                            {
+                                arquivo.WriteLine($"{ligacao.origem};{ligacao.destino};{ligacao.distancia}");
+                                gravadas.Add(chave1);
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex)
             {
                 Console.WriteLine($"Ocorreu um erro: {ex.Message}");
             }
@@ -312,14 +393,18 @@ namespace Proj4
 
 
         private void atualizarInfo()
-        {
+        { 
             // atualizar cbx
             List<Cidade> cidades = new List<Cidade>();
             arvore.VisitarEmOrdem(cidades);
+            cbxCidadeDestino.Items.Clear();
             foreach (var cidade in cidades)
             {
                 cbxCidadeDestino.Items.Add(cidade.Nome);
             }
+
+            caminhoEncontrado.Clear();
+            pbMapa.Invalidate();
         }
 
 

@@ -117,7 +117,8 @@ namespace Proj4
             pilha.Clear();
             while (onde != inicioDoPercurso)
             {
-                pilha.Push(new Tuple<string, int>(vertices[onde].rotulo, percurso[onde].distancia));
+                if (percurso[onde].distancia != infinity)
+                    pilha.Push(new Tuple<string, int>(vertices[onde].rotulo, percurso[onde].distancia));
                 onde = percurso[onde].verticePai;
             }
             pilha.Push(new Tuple<string, int>(vertices[inicioDoPercurso].rotulo, 0));

@@ -82,8 +82,15 @@ namespace Proj4
 
     public void GravarRegistro(BinaryWriter arquivo)
     {
+        if (arquivo == null)
+            return;
 
+        char[] umNome = new char[tamanhoNome];
+        for (int i = 0; i < tamanhoNome; i++)
+            umNome[i] = nome[i];
+        arquivo.Write(umNome);
+        arquivo.Write(x);
+        arquivo.Write(y);
     }
-
   }
 }
